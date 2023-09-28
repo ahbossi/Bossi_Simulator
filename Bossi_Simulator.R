@@ -82,9 +82,12 @@ ui <- fluidPage(
       br(),
       a(href = "https://raw.githubusercontent.com/ahbossi/Bossi_Simulator/7c5ece767bddd1f2235f8a904d434649fb2df488/LICENSE", "MIT License"),
       " | ",
-      a(href = "https://github.com/ahbossi/Bossi_Simulator", "Code")
+      a(href = "https://github.com/ahbossi/Bossi_Simulator", "Code"),
+      br(),
+      br(),
+      HTML('<a href="https://zenodo.org/badge/latestdoi/697859921"><img src="https://zenodo.org/badge/697859921.svg" alt="DOI"></a>'),
+      br()
   )
-
 )
 
 
