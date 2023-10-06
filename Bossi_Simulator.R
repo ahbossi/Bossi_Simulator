@@ -1,6 +1,7 @@
 library(shiny)
 library(readxl)
 library(writexl)
+library(shinycssloaders)
 
 ui <- fluidPage(
   tags$head(
@@ -62,10 +63,10 @@ ui <- fluidPage(
       downloadButton('downloadData', 'Download Data')
     ),
     mainPanel(
-      plotOutput("hist1"),
-      plotOutput("hist2"),
-      plotOutput("hist3"),
-      plotOutput("scatterPlot", height = "800px")
+      withSpinner(plotOutput("hist1")),
+      withSpinner(plotOutput("hist2")),
+      withSpinner(plotOutput("hist3")),
+      withSpinner(plotOutput("scatterPlot", height = "800px"))
     )
   ),
 
