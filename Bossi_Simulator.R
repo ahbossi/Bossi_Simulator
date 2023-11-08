@@ -107,24 +107,40 @@ server <- function(input, output) {
     c(min(all_data), max(all_data))
   })
   
+  max_freq_reactive <- reactive({
+    data_to_plot1 <- data1_reactive()
+    data_to_plot2 <- data2_reactive()
+    h1 <- hist(data_to_plot1, plot = FALSE)
+    h2 <- hist(data_to_plot2, plot = FALSE)
+    max(c(h1$counts, h2$counts))
+  })
+  
   output$hist1 <- renderPlot({
     par(mar=c(5.1, 6.1, 4.1, 2.1))
-    hist(data1_reactive(), main = "Baseline Data",
+    data_to_plot1 <- data1_reactive()
+    h1 <- hist(data_to_plot1, main = "Baseline Data",
          xlim = range_reactive(),
+         ylim = c(0, max_freq_reactive()),
          xlab = expression(bold(dot(V)*O[2*max]~("ml" * "\U00B7kg"^{"-1"} * "\U00B7min"^{"-1"}))),
          ylab = "Individuals",
          col = "lightblue",
          border = "black")
+    curve(dnorm(x, mean = mean(data_to_plot1), sd = sd(data_to_plot1)) * length(data_to_plot1) * diff(h1$mids)[1], 
+         col = "black", lwd = 2, add = TRUE)
   })
   
   output$hist2 <- renderPlot({
     par(mar=c(5.1, 6.1, 4.1, 2.1))
-    hist(data2_reactive(), main = "Post-Training Data",
+    data_to_plot2 <- data2_reactive()
+    h2 <- hist(data_to_plot2, main = "Post-Training Data",
          xlim = range_reactive(),
+         ylim = c(0, max_freq_reactive()),
          xlab = expression(bold(dot(V)*O[2*max]~("ml" * "\U00B7kg"^{"-1"} * "\U00B7min"^{"-1"}))),
          ylab = "Individuals",
          col = "lightgreen",
          border = "black")
+    curve(dnorm(x, mean = mean(data_to_plot2), sd = sd(data_to_plot2)) * length(data_to_plot2) * diff(h2$mids)[1], 
+          col = "black", lwd = 2, add = TRUE)
   })
   
   output$hist3 <- renderPlot({
@@ -148,6 +164,9 @@ server <- function(input, output) {
     abline(v = input$threshold, col = "blue", lty = 2, lwd = 3)
     
     legend("topright", legend = c("Responder", "Non-Responder"), fill = c("yellow", "red"))
+    
+    curve(dnorm(x, mean = mean(data_delta), sd = sd(data_delta)) * length(data_delta) * diff(hist_data$mids)[1], 
+          col = "black", lwd = 2, add = TRUE)
   })
   
   output$scatterPlot <- renderPlot({
